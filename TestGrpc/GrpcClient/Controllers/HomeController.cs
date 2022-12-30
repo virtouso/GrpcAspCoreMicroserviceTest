@@ -1,31 +1,26 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using GrpcClient.Models;
+using GrpcClient.Rpc;
 
 namespace GrpcClient.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly IGreetClient _greetClient;
 
-    public HomeController(ILogger<HomeController> logger)
+
+    public HomeController(ILogger<HomeController> logger, IGreetClient greetClient)
     {
         _logger = logger;
+        _greetClient = greetClient;
     }
 
-    public IActionResult Index()
-    {
-        return View();
-    }
 
-    public IActionResult Privacy()
+    public async Task<IActionResult> Index()
     {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        var result = await _greetClient.SendTest();
+        return Ok(result);
     }
 }
