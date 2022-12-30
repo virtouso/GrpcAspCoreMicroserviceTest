@@ -5,7 +5,8 @@ namespace GrpcClient.Rpc;
 
 public interface IGreetClient
 {
-    Task<HelloReply> SendTest();
+    Task<HelloReply> SendSayHello();
+    Task<GoodbyeReply> SendSayGoodbye();
 }
 
 public class GreetClient : IGreetClient
@@ -19,7 +20,7 @@ public class GreetClient : IGreetClient
         _url = configuration["Kestrel:Endpoints:gRPC:Url"];
     }
 
-    public async Task<HelloReply> SendTest()
+    public async Task<HelloReply> SendSayHello()
     {
         var url = "http://localhost:5107";
         var httpHandler = new HttpClientHandler();
@@ -31,5 +32,18 @@ public class GreetClient : IGreetClient
         _logger.LogInformation($"Greeting: {reply.Message} -- {DateTime.Now}");
         return reply;
 
+    }
+
+    public async Task<GoodbyeReply> SendSayGoodbye()
+    {
+        var url = "http://localhost:5107";
+        var httpHandler = new HttpClientHandler();
+        httpHandler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+        var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { HttpHandler = httpHandler });
+        var client = new Goodbyer.GoodbyerClient(channel);
+
+        var reply = await client.SayGoodbyeAsync(new GoodbyeRequest { Name = "Moeen" });
+        _logger.LogInformation($"Goodbye: {reply.Message} -- {DateTime.Now}");
+        return reply;
     }
 }

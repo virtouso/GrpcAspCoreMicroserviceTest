@@ -1,0 +1,17 @@
+syntax = "proto3";
+option csharp_namespace = "GrpcDemo";
+
+
+
+service Goodbyer {
+ 
+  rpc SayGoodbye (GoodbyeRequest) returns (GoodbyeReply);
+}
+
+message GoodbyeRequest {
+  string name = 1;
+}
+
+message GoodbyeReply {
+  string message = 1;
+}

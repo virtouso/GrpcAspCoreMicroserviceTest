@@ -20,7 +20,14 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var result = await _greetClient.SendTest();
+        var result = await _greetClient.SendSayHello();
+        return Ok(result);
+    }
+    
+    
+    public async Task<IActionResult> Moeen()
+    {
+        var result = await _greetClient.SendSayGoodbye();
         return Ok(result);
     }
 }
