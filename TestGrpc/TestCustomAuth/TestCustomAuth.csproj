@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="jose-jwt" Version="4.1.0" />
       <PackageReference Include="JWT.Extensions.AspNetCore" Version="10.0.0-beta4" />
       <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.1" />
     </ItemGroup>
